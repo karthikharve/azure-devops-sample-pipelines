@@ -10,7 +10,7 @@ variables:
 stages:
 - stage: Build
   displayName: Build image
-  jobs:  
+  jobs:
   - job: Build
     displayName: Build
     pool:
@@ -27,7 +27,7 @@ stages:
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: '**/*.yaml'
+        Contents: '**/*.yml'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
     - task: PublishBuildArtifacts@1
       inputs:
@@ -42,7 +42,7 @@ stages:
 # Publish
 - stage: Deploy
   displayName: Deploy image
-  jobs:  
+  jobs:
   - job: Deploy
     displayName: Deploy
     pool:
@@ -52,17 +52,17 @@ stages:
       inputs:
         buildType: 'current'
         artifactName: 'manifests'
-        itemPattern: '**/*.yaml'
+        itemPattern: '**/*.yml'
         targetPath: '$(System.ArtifactsDirectory)'
     - task: KubernetesManifest@0
       inputs:
         action: 'deploy'
         kubernetesServiceConnection: 'aws-kubernetes-cluster-service-connection'
         namespace: 'default'
-        manifests: '$(System.ArtifactsDirectory)/configuration/kubernetes/deployment.yaml'
+        manifests: '$(System.ArtifactsDirectory)/configuration/kubernetes/deployment.yml'
         containers: atingupta2005/currency-exchange-devops:$(tag)
 
 # Deploy
-# Download 
-# image:100 => Deploy to K8S 
-# apply - kubectl apply -f deployment.yaml
+# Download
+# image:100 => Deploy to K8S
+# apply - kubectl apply -f deployment.yml
